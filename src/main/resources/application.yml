@@ -16,3 +16,5 @@ spring:
     console:
       enabled: true
 
+fixer-url: http://data.fixer.io/api/latest?access_key=25fd33197a3b30bd176c0c6b809c466a
+
