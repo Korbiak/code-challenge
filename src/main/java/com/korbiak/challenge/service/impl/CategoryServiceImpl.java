@@ -35,11 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponse findCategoryById(int id) {
         log.info("Getting category by id = " + id);
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("Category with id = " + id + " not found");
-                    return new EntityNotFoundException("Category with id = " + id + " not found");
-                });
+        Category category = getCategoryById(id);
 
         return categoryMapper.modelToResponse(category);
     }
@@ -59,11 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponse updateCategoryById(int id, CategoryRequest categoryRequest) {
         log.info("Updating category with id =" + id + " to category = " + categoryRequest);
         checkRepeatableName(categoryRequest.getName());
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("Category with id = " + id + "not found");
-                    return new EntityNotFoundException("Category with id = " + id + "not found");
-                });
+        Category category = getCategoryById(id);
 
         category = categoryMapper.requestToEntity(categoryRequest, category);
         categoryRepository.save(category);
@@ -74,7 +66,25 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategoryById(int id) {
         log.info("Deleting category with id = " + id);
+        checkValidCategory(id);
         categoryRepository.deleteById(id);
+    }
+
+    private void checkValidCategory(int id) {
+        log.info("Checking category with id = " + id);
+        if (!categoryRepository.existsById(id)) {
+            log.error("Category with id = " + id + " not found");
+            throw new EntityNotFoundException("Category with id = " + id + " not found");
+        }
+    }
+
+    private Category getCategoryById(int id) {
+        log.info("Getting category with id = " + id);
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Category with id = " + id + "not found");
+                    return new EntityNotFoundException("Category with id = " + id + " not found");
+                });
     }
 
     private void checkRepeatableName(String name) {
