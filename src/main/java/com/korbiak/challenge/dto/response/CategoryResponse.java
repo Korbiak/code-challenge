@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CategoryResponse {
 
-    @NotNull
     private int id;
     private String name;
 }

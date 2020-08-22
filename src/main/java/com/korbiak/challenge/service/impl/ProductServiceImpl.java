@@ -44,8 +44,8 @@ public class ProductServiceImpl implements ProductService {
         log.info("Getting product by id = " + id);
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> {
-                    log.error("Product with id= " + id + "not found");
-                    return new EntityNotFoundException("Product with id= " + id + "not found");
+                    log.error("Product with id = " + id + " not found");
+                    return new EntityNotFoundException("Product with id = " + id + " not found");
                 });
 
         return productMapper.modelToResponse(product);
@@ -66,11 +66,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse updateProductById(int id, ProductRequest productRequest, String coin) {
         log.info("Updating product with id = " + id + " to product = " + productRequest);
+        checkValidProduct(id);
         checkValidCategory(productRequest.getCategory().getId());
-        if (!productRepository.existsById(id)) {
-            log.error("Product with id= " + id + "not found");
-            throw new EntityNotFoundException("Product with id= " + id + "not found");
-        }
 
         Product product = productMapper.requestToModel(productRequest);
         product.setPrice(product.getPrice() / getRateOfGivenCurrency(coin));
@@ -83,7 +80,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProductById(int id) {
         log.info("Deleting product with id = " + id);
+        checkValidProduct(id);
+
         productRepository.deleteById(id);
+    }
+
+    private void checkValidProduct(int id) {
+        log.info("Checking product with id = " + id);
+        if (!productRepository.existsById(id)) {
+            log.error("Product with id = " + id + " not found");
+            throw new EntityNotFoundException("Product with id = " + id + " not found");
+        }
     }
 
     private void checkValidCategory(int id) {

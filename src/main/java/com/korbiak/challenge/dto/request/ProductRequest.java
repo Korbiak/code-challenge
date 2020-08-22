@@ -33,6 +33,5 @@ public class ProductRequest {
     private Date releaseDate;
 
     @NotNull
-    @Valid
     private CategoryResponse category;
 }
