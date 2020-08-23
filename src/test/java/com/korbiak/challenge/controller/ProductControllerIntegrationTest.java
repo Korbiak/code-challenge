@@ -1,4 +1,4 @@
-package com.korbiak.challenge;
+package com.korbiak.challenge.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korbiak.challenge.dto.request.ProductRequest;
