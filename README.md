@@ -1,5 +1,5 @@
 # code-challenge
-Cod-challenge 
+Code-challenge 
 
 Created h2 schema, which will allow storing different products and categories.
 Currency for product price is EUR.
