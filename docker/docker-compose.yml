@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  challenge-proj:
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 8080:8080
+    mem_limit: 500m
+    memswap_limit: 800m
